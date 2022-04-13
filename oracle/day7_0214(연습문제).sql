@@ -32,6 +32,18 @@ INSERT INTO MEMBER_TBL_02
 (CUSTNO, CUSTNAME, PHONE, ADDRESS, JOINDATE, GRADE, CITY)
 VALUES(member_seq02.nextval, '차공단', '010-1111-7777','제주도 제주시 감나무골 ', '20151211','C','60');
 
+--회원수정은 회원번호를 조건으로 전화번호,주소,거주지역 컬럼을 변경할 수 있도록 합니다.
+
+--매출집계 -> 자바 vo 클래스는 select조회 컬럼만으로 변수를 선언해서 작성합니다.
+SELECT mt.CUSTNO , CUSTNAME , 
+		decode(grade,'A','VIP','B','일반','C','직원') AS agrade, 
+		asum FROM MEMBER_TBL_02 mt ,
+		(SELECT custno, sum(price) AS asum FROM MONEY_TBL_02 mt 
+		GROUP BY CUSTNO
+		ORDER BY asum desc) sale
+WHERE mt.CUSTNO = sale.custno ;
+
+
 CREATE TABLE money_tbl_02(
 	custno number(6) NOT NULL,
 	salenol number(8) NOT NULL,
@@ -92,3 +104,9 @@ DECODE(grade,'A','VIP','B','일반','C','직원') AS "고객등급" , p."매출"
 FROM MEMBER_TBL_02 mt ,
 (SELECT CUSTNO ,SUM(price) "매출" FROM MONEY_TBL_02 mt GROUP BY CUSTNO) P
 WHERE mt.CUSTNO =p.custno ORDER BY "매출" DESC ; 
+
+--조건을 회원이름으로 검색
+SELECT  * FROM MEMBER_TBL_02 mt ;
+SELECT  * FROM MEMBER_TBL_02 mt WHERE CUSTNAME ='차공단';
+SELECT  * FROM MEMBER_TBL_02 mt WHERE CUSTNAME LIKE '%공단%';
+SELECT  * FROM MEMBER_TBL_02 mt WHERE CUSTNAME LIKE '%'||'공단' || '%';
