@@ -52,9 +52,9 @@ SELECT  rownum AS R, T.* from
 
 --댓글있는 게시판의 댓글 테이블
 CREATE TABLE comments(
-	idx number(3) NOT NULL,
-	"ref" number(5) NOT NULL,	--댓글 테이블의 기본키
-	name varchar2 (30) NOT NULL,	--FREEBOARD 테이블의 idx 
+	idx number(3) NOT NULL,	--댓글 테이블의 기본키
+	mref number(5) NOT NULL,	--FREEBOARD 테이블의 idx 
+	name varchar2 (30) NOT NULL,	
 	content varchar2 (2000) NOT NULL,
 	wdate DATE DEFAULT sysdate ,
 	ip varchar2 (15) DEFAULT '127.0.0.1', 
@@ -65,7 +65,7 @@ DROP TABLE comments ;
 
 CREATE SEQUENCE cmt_idx_seq;
 
-INSERT INTO comments(idx,"ref",name,content)
+INSERT INTO comments(idx,mref,name,content)
 values(cmt_idx_seq.nextval,2,'이하니','확인했습니다.!!');
 
 --freeboard 테이블의 댓글 갯수
